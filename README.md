@@ -34,6 +34,7 @@ protoc-gen-go: program not found or is not executable
 Please specify a program using absolute path or make sure the program is available in your PATH system variable
 --go_out: protoc-gen-go: Plugin failed with status code 1.
 make: *** [Makefile:2: compile] Error 1
+```
 
 - After some searching found out that /workspace/go did not have a bin folder
 Tried execute the go get cmd in /workspace but got the message that should use go install, so:
@@ -43,6 +44,10 @@ Tried execute the go get cmd in /workspace but got the message that should use g
 - Now this worked: /workspace/proglog/StructureDataWithProtobuf (my-devel) $ make
 
 Observe, at this point need to execute export PATH=$PATH:/workspace/protobuf/bin
-when gitpod workspace restarts
+when gitpod workspace restarts. This could be fixed with a proglog/.gitpod.yml file with content such as:
 ```
-* Chapter 1 Done
+tasks:
+  - name: Set PATH Variable
+    command: echo "export PATH=$PATH:/workspace/protobuf/bin" >> $HOME/.bashrc
+```
+However, it seems to require a whole new image which takes ages to build. Seems much effort for suh a small thing. Instead I cn use `proglog/runme.sh` to setup the env.
